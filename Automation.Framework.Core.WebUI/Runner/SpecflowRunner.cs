@@ -20,6 +20,18 @@ namespace Automation.Framework.Core.WebUI.Runner
             _iserviceProvider.GetRequiredService<IGlobalProperties>();
         }
 
+        [BeforeFeature]
+        public static void BeforeFeature(FeatureContext fc)
+        {
+            IExtentReport iextentReport = _iserviceProvider.GetRequiredService<IExtentReport>();
+            //string ep = iextentReport.GetHashCode().ToString();
+            //Log.Information("The hashcode of extentReport is: " + ep);
+            iextentReport.CreateFeature(fc.FeatureInfo.Title);
+            fc["iextentReport"] = iextentReport;
+        }
+
+
+
         [AfterTestRun]
         public static void AfterTestRun()
         {

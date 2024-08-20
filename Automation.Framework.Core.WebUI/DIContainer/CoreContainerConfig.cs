@@ -24,6 +24,8 @@ namespace Automation.Framework.Core.WebUI.DIContainer
             serviceCollection.AddSingleton<IDefaultVariables, DefaultVariables>();
             serviceCollection.AddSingleton<ILogging, Logging>();
             serviceCollection.AddSingleton<IGlobalProperties, GlobalProperties>();
+            serviceCollection.AddSingleton<IExtentFeatureReport, ExtentFeatureReport>();
+            serviceCollection.AddTransient<IExtentReport, ExtentReport>();
 
             return serviceCollection.BuildServiceProvider();
         }

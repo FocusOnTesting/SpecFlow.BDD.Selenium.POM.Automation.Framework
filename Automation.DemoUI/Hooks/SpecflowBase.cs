@@ -23,12 +23,32 @@ namespace Automation.DemoUI.Hooks
         {
             // get a driver from DI container
             _idriver = iobjectContainer.Resolve<IDriver>();
+            IExtentReport extentReport = (IExtentReport)fc["iextentReport"];
+            extentReport.CreateScenario(sc.ScenarioInfo.Title);
+        }
+
+        [AfterStep]
+        public void AfterSteps(ScenarioContext sc, FeatureContext fc)
+        {
+            IExtentReport extentReport = (IExtentReport)fc["iextentReport"];
+            if (sc.TestError != null)
+            {
+                extentReport.Fail(sc.StepContext.StepInfo.Text);
+            }
+            else
+            {
+                IGlobalProperties iglobalProperties = SpecflowRunner._iserviceProvider.GetRequiredService<IGlobalProperties>();
+                extentReport.Pass(sc.StepContext.StepInfo.Text);
+            }
         }
 
 
         [AfterScenario]
         public void AfterScenario()
         {
+            //flush HTML reports to loacl device
+            IExtentFeatureReport extentFeatureReport = SpecflowRunner._iserviceProvider.GetRequiredService<IExtentFeatureReport>();
+            extentFeatureReport.FlushExtent();
             //quit browser after a scenario
             _idriver.CloseBrowser();
         }

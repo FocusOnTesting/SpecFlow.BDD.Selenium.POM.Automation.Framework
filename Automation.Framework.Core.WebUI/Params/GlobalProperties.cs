@@ -1,4 +1,5 @@
 ﻿using Automation.Framework.Core.WebUI.Abstraction;
+using Automation.Framework.Core.WebUI.Reports;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Automation.Framework.Core.WebUI.Params
     {
         IDefaultVariables _idefaultVariables;
         ILogging _ilogging;
+        IExtentFeatureReport _iextentFeatureReport;
 
         //declare properties mapping frameworkSettings.json file
         public string browserType { get; set; }
@@ -24,10 +26,11 @@ namespace Automation.Framework.Core.WebUI.Params
         public string downloadedLocation { get; set; }
 
         //inject DefaultVariables and Logging object ot GlobalProperties
-        public GlobalProperties(IDefaultVariables idefaultVariables, ILogging ilogging)
+        public GlobalProperties(IDefaultVariables idefaultVariables, ILogging ilogging, IExtentFeatureReport extentFeatureReport)
         {
             _idefaultVariables = idefaultVariables;
             _ilogging = ilogging;
+            _iextentFeatureReport = extentFeatureReport;
             //Call Configuration to read frameworkSettings.json file and format log.txt
             Configuration();
 
@@ -58,7 +61,7 @@ namespace Automation.Framework.Core.WebUI.Params
             logLevel = builder["LogLevel"];
             dataSetLocation = string.IsNullOrEmpty(builder["DataSetLocation"]) ? _idefaultVariables.dataSetLocation : builder["DataSetLocation"];
             downloadedLocation = string.IsNullOrEmpty(builder["DataSetLocation"]) ? _idefaultVariables.dataSetLocation : builder["DownloadedLocation"];
-
+            _iextentFeatureReport.InitializeExtentReport();
             //call Logging class function to set log level
             _ilogging.LogLevel(logLevel);
 
