@@ -33,12 +33,19 @@ namespace Automation.DemoUI.Hooks
             IExtentReport extentReport = (IExtentReport)fc["iextentReport"];
             if (sc.TestError != null)
             {
-                extentReport.Fail(sc.StepContext.StepInfo.Text);
+                string base64 = null;
+                base64 = _idriver.GetScreenShot();
+                extentReport.Fail(sc.StepContext.StepInfo.Text, base64);
             }
             else
             {
                 IGlobalProperties iglobalProperties = SpecflowRunner._iserviceProvider.GetRequiredService<IGlobalProperties>();
-                extentReport.Pass(sc.StepContext.StepInfo.Text);
+                string base64 = null;
+                if (iglobalProperties.stepScreenShot)
+                {
+                    base64 = _idriver.GetScreenShot();
+                }
+                extentReport.Pass(sc.StepContext.StepInfo.Text, base64);
             }
         }
 

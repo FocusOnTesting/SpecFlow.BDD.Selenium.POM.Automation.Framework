@@ -29,6 +29,15 @@ namespace Automation.Framework.Core.WebUI.Params
             }
         }
 
+        //get HTML report directory
+        public string getExtentReport
+        {
+            get
+            {
+                return getReport + "\\index.html";
+            }
+        }
+
         //get applicationConfig.json directory
         public string getAppplicationConfigjson
         {
@@ -56,15 +65,6 @@ namespace Automation.Framework.Core.WebUI.Params
             {
                 return System.IO.Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory + "../../../").FullName
                     + "\\DataSet";
-            }
-        }
-
-        //get HTML report directory
-        public string getExtentReport
-        {
-            get
-            {
-                return getReport + "\\index.html";
             }
         }
     }
